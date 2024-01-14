@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>My Personal Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        h1, h2 {
+            color: #333;
+        }
+        p, li {
+            color: #666;
+        }
+        #myButton {
+            background-color: blue;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Welcome to My Personal Profile</h1>
+    <h2>About Me</h2>
+    <p>My name is John Doe. I am a web developer.</p>
+    <h2>My Hobbies</h2>
+    <ul>
+        <li>Coding</li>
+        <li>Reading</li>
+        <li>Traveling</li>
+    </ul>
+    <h2>Contact Me</h2>
+    <p>Email me at <a href="mailto:john.doe@example.com">john.doe@example.com</a></p>
+    <button id="myButton">Greeting</button>
+    <script>
+        document.getElementById('myButton')
+        .addEventListener('click', function() {
+            alert('Hello, user!');
+        });
+    </script>
+</body>
+</html>
