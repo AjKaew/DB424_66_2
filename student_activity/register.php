@@ -63,16 +63,26 @@ $conn->close();
         border-top-left-radius: 6px;
       }
 
-      .form-signin input[name="password"] {
+      .form-signin input[id="floatingPassword2"] {
         margin-bottom: 10px;
         border-bottom-left-radius: 6px;
         border-bottom-right-radius: 6px;
       }
     </style>
+    <script>
+      function confirmPassword() {
+        let p1 = document.getElementById('floatingPassword').value;
+        let p2 = document.getElementById('floatingPassword2').value;
+        if (p1 != p2) {
+          alert('Password not match.');
+          event.preventDefault();
+        }
+      }
+    </script>
   </head>
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
     <main class="form-signin w-100 m-auto">
-      <form method="post">
+      <form method="post" onsubmit="confirmPassword()">
         <!-- <img class="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
         <h1 class="h3 mb-3 fw-normal">Please register</h1>
 <?php
@@ -118,6 +128,11 @@ if (isset($error)) {
           <input name="password" type="password" class="form-control" 
           id="floatingPassword" placeholder="Password" required>
           <label for="floatingPassword">Password</label>
+        </div>
+        <div class="form-floating">
+          <input type="password" class="form-control" 
+          id="floatingPassword2" placeholder="Confirm Password" required>
+          <label for="floatingPassword2">Confirm Password</label>
         </div>
     
         <button name="submit" class="btn btn-primary w-100 py-2" type="submit">Sign up</button>
