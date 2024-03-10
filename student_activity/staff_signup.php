@@ -6,19 +6,15 @@ if (isset($_POST['submit'])) {
   $id = $_POST['id'];
   $email = $_POST['email'];
   $fullname = $_POST['fullname'];
-  $dep_id = $_POST['dep_id'];
   $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
 
-  // $sql = "insert into 
-  //         students (id, fullname, email, dep_id, password)
-  //         values ('$id', '$fullname', '$email', '$dep_id','$password')";
   $sql = "insert into 
-          students (id, fullname, email, dep_id, password)
-          values (?, ?, ?, ?, ?)";
+          staff (id, fullname, email, password)
+          values (?, ?, ?, ?)";
 
   try {
     $stm = $conn->prepare($sql);
-    $stm->bind_param('sssss', $id, $fullname, $email, $dep_id, $password);
+    $stm->bind_param('ssss', $id, $fullname, $email, $password);
     $stm->execute();
     $_SESSION['user'] = ['id'=>$id,'fullname'=>$fullname];
     header('location: main.php');
@@ -29,6 +25,7 @@ if (isset($_POST['submit'])) {
     $error = 'Something wrong in registration';
   }
 }
+$conn->close();
 ?>
 <!doctype html>
 <html lang="en">
@@ -77,20 +74,6 @@ if (isset($_POST['submit'])) {
           event.preventDefault();
         }
       }
-
-      function changeFaculty() {
-        let id = document.getElementById('floatingFaculty').value;
-        fetch('departments.php?id='+id)
-        .then(resp=>resp.json())
-        .then(data=>{
-          let departments = document.getElementById('floatingDepartment');
-          let options = '';
-          for (let dep of data) {
-            options += `<option value="${dep.id}">${dep.name}</option>`;
-          }
-          departments.innerHTML = options;
-        });
-      }
     </script>
   </head>
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
@@ -106,8 +89,8 @@ if (isset($error)) {
 ?>    
         <div class="form-floating">
           <input name="id" type="text" class="form-control" 
-          id="floatingID" placeholder="Student ID" required>
-          <label for="floatingID">Student ID</label>
+          id="floatingID" placeholder="Staff ID" required>
+          <label for="floatingID">Staff ID</label>
         </div>
         <div class="form-floating">
           <input name="fullname" type="text" class="form-control" 
@@ -118,35 +101,6 @@ if (isset($error)) {
           <input name="email" type="email" class="form-control" 
           id="floatingEmail" placeholder="Email address" required>
           <label for="floatingEmail">Email address</label>
-        </div>
-        <div class="form-floating">
-          <select class="form-select" 
-          id="floatingFaculty" placeholder="Faculty" onchange="changeFaculty()">
-<?php
-$sql = 'select * from faculties order by id';
-$result = $conn->query($sql);
-while ($row = $result->fetch_assoc()) {
-  echo "<option value='{$row['id']}'>{$row['name']}</option>";
-}
-?>
-          </select>
-          <label for="floatingFaculty">Faculty</label>
-        </div>
-        <div class="form-floating">
-          <select name="dep_id" class="form-select" 
-          id="floatingDepartment" placeholder="Department">
-<?php
-$sql = 'select id, name from departments where fac_id=(
-        select min(id) from faculties
-        )';
-$result = $conn->query($sql);
-while ($row = $result->fetch_assoc()) {
-  echo "<option value='{$row['id']}'>{$row['name']}</option>";
-}
-$conn->close();
-?>
-          </select>
-          <label for="floatingDepartment">Department</label>
         </div>
         <div class="form-floating">
           <input name="password" type="password" class="form-control" 

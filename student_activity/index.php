@@ -16,7 +16,8 @@ if (isset($_POST['submit'])) {
       if (password_verify($password, $row['password'])) {
         $_SESSION['user'] = [
           'id'=>$row['id'], 
-          'fullname'=>$row['fullname']
+          'fullname'=>$row['fullname'],
+          'pic'=>$row['pic']
         ];
         header('location: main.php');
         exit();
@@ -73,7 +74,8 @@ $conn->close();
   <body class="d-flex align-items-center py-4 bg-body-tertiary">
     <main class="form-signin w-100 m-auto">
       <form method="post">
-        <!-- <img class="mb-4" src="/docs/5.3/assets/brand/bootstrap-logo.svg" alt="" width="72" height="57"> -->
+        <img class="mb-4" src="images/logo.png" alt="" width="72" height="57">
+        <span class="h3 text-success">Student Activity</span>
         <h1 class="h3 mb-3 fw-normal">Please sign in</h1>
     
         <div class="form-floating">
